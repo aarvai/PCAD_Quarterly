@@ -1,0 +1,13 @@
+Archive/**
+PROP_Q*/**
+PCAD_Q*/**
+conversion/**
+ltt/**
+data/**
+csh_files/**
+*.pyc
+*.png
+*.jpg
+*.dat
+*.mat
+*.db
