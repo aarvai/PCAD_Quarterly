@@ -1,3 +1,0 @@
-PCAD_Quarterly(2014032,2014212)
-
-PROP_Quarterly(2014032,2014212)

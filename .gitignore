@@ -11,3 +11,4 @@ csh_files/**
 *.dat
 *.mat
 *.db
+*.m~
