@@ -1,13 +1,14 @@
-%Check_For_Dropouts.m
+function out = Check_For_Dropouts()
+
 %This script will parse and plot the propulsion thermistor dropouts summary
 %dropouts.mat, which is updated weekly through PROP_Weekly.m.  It will also
 %save .PNGs to the current directory for use in the quarterly report.
 
-clear all
-close all
-clc
 
-load G:\pcad\Investigations\MUPS_2_Temp_Sensor\dropouts.mat
+close all
+
+
+load /home/pcad/Investigations/MUPS_2_Temp_Sensor/dropouts.mat
 
 %Re-parse the structure
 dropouts_msid={};
