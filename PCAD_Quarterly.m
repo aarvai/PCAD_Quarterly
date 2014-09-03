@@ -7,42 +7,60 @@ addpath('/home/pcad/PCAD_Quarterly')
 tstart=time(sd);
 tstop=time(ed);
 
+sd_str = num2str(sd);
+ed_str = num2str(ed);
+
 dn_pcad=['PCAD_Q_' num2str(sd) '_' num2str(ed)];
 mkdir(dn_pcad);
-dn_prop=['PCAD_Q_' num2str(sd) '_' num2str(ed)];
+dn_prop=['PROP_Q_' num2str(sd) '_' num2str(ed)];
 mkdir(dn_prop);
+
+dn_python = ['Q_' num2str(sd) '_' num2str(ed)];
+dn_python = 'Q_2014032_2014212';
 
 %---------------------------------------------------------------------
 % Run Python plots
 cd /home/pcad/python/quarterlies;
 system('rm *.pyc');
-system('/proj/sot/ska/bin/python run_quarterlies.py');
-system(strcat(['cp pcad_mission ', dn_pcad]))
-system(strcat(['cp pcad_quarterly ', dn_pcad]))
-system(strcat(['cp prop_mission ', dn_prop]))
-system(strcat(['cp prop_other ', dn_prop]))
+system(strcat(['/proj/sot/ska/bin/python run_quarterlies.py "', sd_str(1:4), ':', sd_str(5:7), '" "', ed_str(1:4), ':', ed_str(5:7), '"']));
+cd(dn_python)
+system(strcat(['cp -r pcad_mission/ /home/pcad/PCAD_Quarterly/', dn_pcad, '/']));
+system(strcat(['cp -r pcad_quarter/ /home/pcad/PCAD_Quarterly/', dn_pcad, '/']));
+system(strcat(['cp -r prop_mission/ /home/pcad/PCAD_Quarterly/', dn_prop, '/']));
+system(strcat(['cp -r prop_other/ /home/pcad/PCAD_Quarterly/', dn_prop, '/']));
 
 %---------------------------------------------------------------------
-% Matlab plots that haven't been converted to Python yet
+% Matlab LTT plots that haven't been converted to Python yet
 ltt_root='/home/pcad/PCAD_Quarterly/ltt/';
-cd('../pcad_mission')
+
+cd(strcat(['/home/pcad/PCAD_Quarterly/', dn_pcad, '/pcad_quarter']))
 temp=LTTquery([ltt_root 'A_PNT_CTRL_STAB.ltt'],tstart,tstop,'keep dat');
 LTTplot(temp,2)
 close all
 clear temp
 
-cd('../pcad_quarterly')
+cd('../pcad_mission')
 temp=LTTquery([ltt_root 'A_PNT_CTRL_STAB.ltt'],time(1999275),tstop,'keep dat');
 LTTplot(temp,2)
 close all
 clear temp
 
+%---------------------------------------------------------------------
+% Other Matlab plots
 
+cd('..')
+mkdir('Ref')
 
+% Thermistor dropout plots
+Check_For_Dropouts
 
-PROP_Quarterly(sd,ed)
+% 1Shot plots
+addpath('/home/pcad/matlab/1_SHOT/code')
+m = BuildManStruc('/home/pcad/matlab/1_SHOT/ManeuverData');
+plotOneShots(m)
 
-
+% Text file of all G_LIMMON violations for the quarter
+LimitViolations(sd, ed)
 
 %---------------------------------------------------------------------
 % Copy files to Noodle
