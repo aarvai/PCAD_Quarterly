@@ -15,21 +15,13 @@ mkdir(dn_pcad);
 dn_prop=['PROP_Q_' num2str(sd) '_' num2str(ed)];
 mkdir(dn_prop);
 
-%dn_python = ['Q_' num2str(sd) '_' num2str(ed)];
-
 %---------------------------------------------------------------------
 % Run Python plots
 disp(' ')
 disp('Running Python Plots...')
 disp(' ')
-%cd /home/pcad/python/quarterlies;
 system('rm *.pyc');
 system(strcat(['/proj/sot/ska/bin/python run_quarterlies.py "', sd_str(1:4), ':', sd_str(5:7), '" "', ed_str(1:4), ':', ed_str(5:7), '"']));
-%cd(dn_python)
-%system(strcat(['cp -r pcad_mission/ /home/pcad/PCAD_Quarterly/', dn_pcad, '/']));
-%system(strcat(['cp -r pcad_quarter/ /home/pcad/PCAD_Quarterly/', dn_pcad, '/']));
-%system(strcat(['cp -r prop_mission/ /home/pcad/PCAD_Quarterly/', dn_prop, '/']));
-%system(strcat(['cp -r prop_other/ /home/pcad/PCAD_Quarterly/', dn_prop, '/']));
 
 %---------------------------------------------------------------------
 % Matlab LTT plots that haven't been converted to Python yet
@@ -37,17 +29,32 @@ disp('Running Matlab LTT Plots...')
 disp(' ')
 ltt_root='/home/pcad/PCAD_Quarterly/ltt/';
 
-cd(strcat(['/home/pcad/PCAD_Quarterly/', dn_pcad, '/pcad_quarter']))
+% Pointing control plots
+cd(strcat(['/home/pcad/PCAD_Quarterly/', dn_pcad, '/pcad_mission']))
+temp=LTTquery([ltt_root 'A_PNT_CTRL_STAB.ltt'],time(1999275),tstop,'keep dat');
+LTTplot(temp,2)
+close all
+clear temp
+
+cd('../pcad_quarter')
 temp=LTTquery([ltt_root 'A_PNT_CTRL_STAB.ltt'],tstart,tstop,'keep dat');
 LTTplot(temp,2)
 close all
 clear temp
 
-cd('../pcad_mission')
-temp=LTTquery([ltt_root 'A_PNT_CTRL_STAB.ltt'],time(1999275),tstop,'keep dat');
+% Converter voltages table
+temp=LTTquery([ltt_root 'A_A_CONV_VOLTAGE.ltt'],tstart,tstop,'keep dat');
 LTTplot(temp,2)
 close all
 clear temp
+
+cd('../pcad_quarter')
+temp=LTTquery([ltt_root 'A_WDE_CONV_VOLTAGE.ltt'],tstart,tstop,'keep dat');
+LTTplot(temp,2)
+close all
+clear temp
+
+run_converter_voltage_calc(sd, ed);
 
 %---------------------------------------------------------------------
 % Other Matlab plots
@@ -57,6 +64,7 @@ mkdir('Ref')
 cd('Ref')
 
 % Thermistor dropout plots
+disp(' ')
 disp('Running Thermistor Dropout Plots...')
 disp(' ')
 Check_For_Dropouts
