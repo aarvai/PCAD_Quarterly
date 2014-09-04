@@ -18,7 +18,7 @@ mkdir(dn_prop);
 %---------------------------------------------------------------------
 % Run Python plots
 disp(' ')
-disp('Running Python Plots...')
+disp('Running Python Trending Plots...')
 disp(' ')
 system('rm *.pyc');
 system(strcat(['/proj/sot/ska/bin/python run_quarterlies.py "', sd_str(1:4), ':', sd_str(5:7), '" "', ed_str(1:4), ':', ed_str(5:7), '"']));
@@ -59,7 +59,12 @@ run_converter_voltage_calc(sd, ed);
 %---------------------------------------------------------------------
 % Other Matlab plots
 
-cd('..')
+% Quarterly Dump Stats
+disp(' ')
+disp('Collecting Quarterly Dump Stats...')
+disp(' ')
+QuarterlyDumpStats(sd, ed);
+
 mkdir('Ref')
 cd('Ref')
 
