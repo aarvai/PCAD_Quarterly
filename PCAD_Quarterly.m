@@ -29,7 +29,7 @@ disp('Running Matlab LTT Plots...')
 disp(' ')
 ltt_root='/home/pcad/PCAD_Quarterly/ltt/';
 
-% Pointing control plots
+% Pointing control and stability plots
 cd(strcat(['/home/pcad/PCAD_Quarterly/', dn_pcad, '/pcad_mission']))
 temp=LTTquery([ltt_root 'A_PNT_CTRL_STAB.ltt'],time(1999275),tstop,'keep dat');
 LTTplot(temp,2)
@@ -54,10 +54,18 @@ LTTplot(temp,2)
 close all
 clear temp
 
+disp(' ')
+disp('Collecting PCAD Voltage Stats...')
 run_converter_voltage_calc(sd, ed);
 
 %---------------------------------------------------------------------
 % Other Matlab plots
+
+% Pointing stability plots
+cd(strcat(['/home/pcad/PCAD_Quarterly/', dn_pcad, '/pcad_quarter']))
+disp('Running Pointing Stability Plots...')
+disp(' ')
+PointingStab(.1, .1);
 
 % Quarterly Dump Stats
 disp(' ')
@@ -65,6 +73,7 @@ disp('Collecting Quarterly Dump Stats...')
 disp(' ')
 QuarterlyDumpStats(sd, ed);
 
+cd('..')
 mkdir('Ref')
 cd('Ref')
 
@@ -85,8 +94,5 @@ plotOneShots(m)
 disp('Compiling limit violations...')
 disp(' ')
 LimitViolations(sd, ed)
-
-%---------------------------------------------------------------------
-% Copy files to Noodle
 
 disp('Done!')
