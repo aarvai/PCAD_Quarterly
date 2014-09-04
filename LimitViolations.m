@@ -20,7 +20,7 @@ dlmwrite('QuarterlyLimitViolations.txt','')
 %Append each day's worth of limit violations to the master file
 t=t1;
 while t<=t2
-    disp(datestr(MatlabTime(t)))
+    %disp(datestr(MatlabTime(t)))
     [yr,mo,day,hr,min,sec]=datevec(MatlabTime(t));
     violation_file=strcat(['/share/FOT/engineering/reports/dailies/',num2str(yr),'/',upper(datestr(MatlabTime(t),3)),'/',lower(datestr(MatlabTime(t),3)),sprintf('%02.0f',day),'_',sprintf('%03.0f',mattodoy(MatlabTime(t))),'/limits.txt']);
     days_violation=textread(violation_file,'%s', 'whitespace', '','bufsize',80000);

@@ -16,7 +16,6 @@ dn_prop=['PROP_Q_' num2str(sd) '_' num2str(ed)];
 mkdir(dn_prop);
 
 dn_python = ['Q_' num2str(sd) '_' num2str(ed)];
-dn_python = 'Q_2014032_2014212';
 
 %---------------------------------------------------------------------
 % Run Python plots
