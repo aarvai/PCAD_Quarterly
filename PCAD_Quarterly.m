@@ -19,6 +19,8 @@ dn_python = ['Q_' num2str(sd) '_' num2str(ed)];
 
 %---------------------------------------------------------------------
 % Run Python plots
+disp('Running Python Plots...')
+disp(' ')
 cd /home/pcad/python/quarterlies;
 system('rm *.pyc');
 system(strcat(['/proj/sot/ska/bin/python run_quarterlies.py "', sd_str(1:4), ':', sd_str(5:7), '" "', ed_str(1:4), ':', ed_str(5:7), '"']));
@@ -30,6 +32,8 @@ system(strcat(['cp -r prop_other/ /home/pcad/PCAD_Quarterly/', dn_prop, '/']));
 
 %---------------------------------------------------------------------
 % Matlab LTT plots that haven't been converted to Python yet
+disp('Running Matlab LTT Plots...')
+disp(' ')
 ltt_root='/home/pcad/PCAD_Quarterly/ltt/';
 
 cd(strcat(['/home/pcad/PCAD_Quarterly/', dn_pcad, '/pcad_quarter']))
@@ -51,15 +55,23 @@ cd('..')
 mkdir('Ref')
 
 % Thermistor dropout plots
+disp('Running Thermistor Dropout Plots...')
+disp(' ')
 Check_For_Dropouts
 
 % 1Shot plots
+disp('Running 1 Shot Plots...')
+disp(' ')
 addpath('/home/pcad/matlab/1_SHOT/code')
 m = BuildManStruc('/home/pcad/matlab/1_SHOT/ManeuverData');
 plotOneShots(m)
 
 % Text file of all G_LIMMON violations for the quarter
+disp('Compiling limit violations...')
+disp(' ')
 LimitViolations(sd, ed)
 
 %---------------------------------------------------------------------
 % Copy files to Noodle
+
+disp('Done!')
