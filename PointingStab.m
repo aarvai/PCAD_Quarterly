@@ -18,7 +18,7 @@ load PITCH_CTRL
 pstab=out(3).data.mean + 1.65*out(3).data.stdev;
 ystab=out(4).data.mean + 1.65*out(4).data.stdev;
 
-disp(' ')
+disp('This script will remove outliers above user-defined thresholds.')
 disp('Ideally, the only outliers that should be removed should correspond to 107 runs or other big events.')
 disp(' ')
 
@@ -27,30 +27,26 @@ figure(1)
 plot(out(3).data.day,pstab)
 title('Pitch Pointing Control 95% Threshold')
 ylabel('arcsec')
-more = 'y';
-while lower(more) ~= 'n'
-    high=find(pstab>pthresh);
-    days=out(3).data.day(high);
-    if length(days) > 0
+change = 'y';
+while lower(change) ~= 'n'
+    high = pstab > pthresh;
+    days = out(3).data.day(high);
+    disp(strcat(['Pitch Stability:  With the current threshold of ', num2str(pthresh), ' arcsec, the following days will be removed:']))
+    if ~isempty(days)
         hold on
         plot(out(3).data.day(high),pstab(high), 'r*')
         hold off
-        disp('The following days have outliers in pitch:')
         disp(char(days))
-        del=input('Would you like to delete?  (y/n)  ', 's');
-        if lower(del)=='y'
-            ok=pstab<pthresh;
-            plot(out(3).data.day(ok),pstab(ok))
-        else
-            plot(out(3).data.day,pstab)
-        end
     else
-        disp('There are no outliers in pitch.')
+        disp('< None >')
     end
-    more = input('Are there more outliers to remove?  ', 's');
-    if lower(more) ~= 'n'
-        disp(strcat(['Current pitch threshold is ', num2str(pthresh)]))
-        pthresh = input('New pitch threshold?');
+    change=input('Would you like to change the threshold?  (y/n)  ', 's');
+    if lower(change) == 'y'
+        pthresh = input('New pitch threshold?  ');
+        plot(out(3).data.day,pstab)
+    else
+        ok = pstab < pthresh;
+        plot(out(3).data.day(ok),pstab(ok))
     end
 end
 title('Pitch Pointing Control 95% Threshold')
@@ -63,30 +59,26 @@ figure(2)
 plot(out(4).data.day,ystab)
 title('Yaw Pointing Control 95% Threshold')
 ylabel('arcsec')
-more = 'y';
-while lower(more) ~= 'n'
-    high=find(ystab>ythresh);
-    days=out(4).data.day(high);
-    if length(days) > 0
+change = 'y';
+while lower(change) ~= 'n'
+    high = ystab > ythresh;
+    days = out(4).data.day(high);
+    disp(strcat(['Yaw Stability:  With the current threshold of ', num2str(ythresh), ' arcsec, the following days will be removed:']))
+    if ~isempty(days)
         hold on
         plot(out(4).data.day(high),ystab(high), 'r*')
         hold off
-        disp('The following days have outliers in yaw:')
         disp(char(days))
-        del=input('Would you like to delete?  (y/n)  ', 's');
-        if lower(del)=='y'
-            ok=ystab<ythresh;
-            plot(out(4).data.day(ok),ystab(ok))
-        else
-            plot(out(4).data.day,ystab)
-        end
     else
-        disp('There are no outliers in yaw.')
+        disp('< None >')
     end
-    more = input('Are there more outliers to remove?  ', 's');
-    if lower(more) ~= 'n'
-        disp(strcat(['Current yaw threshold is ', num2str(ythresh)]))
-        ythresh = input('New yaw threshold?');
+    change=input('Would you like to change the threshold?  (y/n)  ', 's');
+    if lower(change) == 'y'
+        ythresh = input('New yaw threshold?  ');
+        plot(out(4).data.day,ystab)
+    else
+        ok = ystab < ythresh;
+        plot(out(4).data.day(ok),ystab(ok))
     end
 end
 title('Yaw Pointing Control 95% Threshold')
