@@ -15,6 +15,7 @@ dur=d.e.time(i)-d.s.time(i);  % duration
 dH=d.e.mom(i,:)-d.s.mom(i,:);  %delta momentum (index,all)
 
 disp('Dumps this quarter:')
+disp('Time, Dur (sec), dX mom, dY mom, dZ mom (ft-lbf-sec)')
 for n=1:length(dur)
 display([s_str(n,1:end-4) ',' num2str(dur(n),5) ',' num2str(dH(n,:),'%2.2f,') ])
 end
@@ -26,7 +27,7 @@ cts=d.e.counts(i,:)-d.s.counts(i,:);  % get counts
 on_time=sum(cts./100);
 
 disp(' ')
-disp('Thruster On-Time this Quarter:')
+disp('Thruster On-Time this Quarter (sec):')
 disp('        A1        A2        A3        A4        B1        B2        B3        B4')
 disp(on_time)  % convert to seconds
 
