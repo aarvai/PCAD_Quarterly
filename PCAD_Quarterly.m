@@ -2,6 +2,8 @@ function PCAD_Quarterly(sd,ed)
 
 %---------------------------------------------------------------------
 %Directory bookkeeping
+close('all')
+
 addpath('/home/pcad/PCAD_Quarterly')
 
 tstart=time(sd);
@@ -14,6 +16,12 @@ dn_pcad=['PCAD_Q_' num2str(sd) '_' num2str(ed)];
 mkdir(dn_pcad);
 dn_prop=['PROP_Q_' num2str(sd) '_' num2str(ed)];
 mkdir(dn_prop);
+
+cd(dn_pcad)
+mkdir('Ref')
+cd('Ref')
+diary('log.txt')
+cd('../..')
 
 %---------------------------------------------------------------------
 % Run Python plots
@@ -73,9 +81,7 @@ disp('Collecting Quarterly Dump Stats...')
 disp(' ')
 QuarterlyDumpStats(sd, ed);
 
-cd('..')
-mkdir('Ref')
-cd('Ref')
+cd('../Ref')
 
 % Thermistor dropout plots
 disp(' ')
@@ -95,4 +101,8 @@ disp('Compiling limit violations...')
 disp(' ')
 LimitViolations(sd, ed)
 
-disp('Done!')
+disp('Done!  Files have been saved to:')
+disp(dn_pcad)
+disp(dn_prop)
+
+diary off
